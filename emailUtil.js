@@ -1,37 +1,13 @@
 import nodemailer from "nodemailer";
 import pkg from "pg";
-import connectPgSimple from 'connect-pg-simple';
-import dotenv from 'dotenv'
-import session from "express-session";
+import dotenv from 'dotenv';
 
 dotenv.config();
 
-const { Pool } = pkg;
+const { Client } = pkg;
 
-const pool = new Pool({
-  user: process.env.POSTGRES_USER,
-  host: process.env.POSTGRES_HOST,
-  database: process.env.POSTGRES_DB,
-  password: process.env.POSTGRES_PASSWORD,
-  port: Number(process.env.POSTGRES_PORT),
-  ssl: { rejectUnauthorized: false }
-});
-
-// ✅ Setup session store
-const pgSession = connectPgSimple(session);
-
-app.use(
-  session({
-    store: new pgSession({
-      pool: pool, // ✅ use pool, not Client
-    }),
-    secret: process.env.SESSION_PASSWORD,
-    resave: false,
-    saveUninitialized: false
-  })
-);
-
-const db = new pkg.Client({
+// ✅ Create DB client
+const db = new Client({
   user: process.env.POSTGRES_USER,
   host: process.env.POSTGRES_HOST,
   database: process.env.POSTGRES_DB,
@@ -41,12 +17,13 @@ const db = new pkg.Client({
 });
 
 db.connect()
-  .then(() => console.log("✅ DB connected successfully"))
+  .then(() => console.log("✅ EmailUtil DB connected successfully"))
   .catch((err) => {
-    console.error("❌ DB connection failed:", err.message);
+    console.error("❌ EmailUtil DB connection failed:", err.message);
     process.exit(1);
   });
 
+// ✅ Setup email transporter
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
@@ -55,6 +32,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// ✅ Exported function to send email
 export async function sendEmail(userId, message) {
   const { rows } = await db.query("SELECT email FROM users WHERE id = $1", [userId]);
   const email = rows[0]?.email;
@@ -73,4 +51,3 @@ export async function sendEmail(userId, message) {
 
   return transporter.sendMail(mailOptions);
 }
-
