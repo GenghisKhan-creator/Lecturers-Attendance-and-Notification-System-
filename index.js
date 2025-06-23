@@ -28,6 +28,14 @@ app.use(
     })
 );
 
+console.log('Connecting with:', {
+  user: process.env.POSTGRES_USER,
+  host: process.env.POSTGRES_HOST,
+  database: process.env.POSTGRES_DB,
+  port: Number(process.env.POSTGRES_PORT),
+  ssl: { rejectUnauthorized: false }
+});
+
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
