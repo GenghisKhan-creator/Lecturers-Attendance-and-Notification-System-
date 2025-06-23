@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecturer Attendance Dashboard</title>
+    <link rel="stylesheet" href="css/le_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Lecturer Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="/attendance" id="sidebarNewAttendance">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>New Attendance Form</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/report" id="sidebarNewAttendance">
+                            <i class="fa-solid fa-receipt"></i>
+                            <span>Report</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/logout" id="sidebarLogout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        <!-- <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+            <i class="fas fa-bars"></i>
+        </button> -->
+
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Attendance Report</h1>
+                <div class="mobile-header-actions">
+                    <a href="#new-attendance-mobile" id="mobileNewAttendanceBtn" class="mobile-action-btn" aria-label="New Attendance Form">
+                        <i class="fas fa-plus-circle"></i>
+                    </a>
+                    <a href="#logout-mobile" id="mobileLogoutBtn" class="mobile-action-btn" aria-label="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+            </header>
+
+            <section class="attendance-summary">
+                <div class="summary-card">
+                    <h3>Overall Attendance</h3>
+                    <div class="percentage-display" id="overallPercentage"><%= percentage %>%</div>
+                    <p>Attended</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Classes Conducted</h3>
+                    <div class="percentage-display" id="classesConducted"><%= presentCount %>/50</div>
+                    <p>Total</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Average Punctuality</h3>
+                    <div class="percentage-display" id="avgPunctuality">100%</div>
+                    <p>On Time</p>
+                </div>
+            </section>
+
+            <section class="attendance-charts">
+                <h2>Monthly Breakdown</h2>
+                <div class="chart-container">
+                    <div class="chart">
+                        <div class="bar-group">
+                            <div class="bar" style="height: 70%;" data-label="Jan"></div>
+                            <span class="bar-value">70%</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar" style="height: 85%;" data-label="Feb"></div>
+                            <span class="bar-value">85%</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar" style="height: 60%;" data-label="Mar"></div>
+                            <span class="bar-value">60%</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar" style="height: 90%;" data-label="Apr"></div>
+                            <span class="bar-value">90%</span>
+                        </div>
+                         <div class="bar-group">
+                            <div class="bar" style="height: 78%;" data-label="May"></div>
+                            <span class="bar-value">78%</span>
+                        </div>
+                    </div>
+                    <div class="chart-labels">
+                        <span>Jan</span>
+                        <span>Feb</span>
+                        <span>Mar</span>
+                        <span>Apr</span>
+                        <span>May</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="scripts/lec.js"></script>
+</body>
+</html>

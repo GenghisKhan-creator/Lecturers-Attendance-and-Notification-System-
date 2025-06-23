@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Form</title>
+<style>
+  body {
+    font-family: sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+  }
+
+  .attendance-form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .attendance-form h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: bold;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="time"],
+  .form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* So padding doesn't affect width */
+    font-size: 16px;
+  }
+
+  .form-group select {
+    appearance: none; /* Remove default arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+  }
+
+  .form-group input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+
+  .form-group input[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+
+  /* Basic responsiveness */
+  @media (max-width: 600px) {
+    .attendance-form {
+      margin: 20px;
+      padding: 20px;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="time"],
+    .form-group select,
+    .form-group input[type="submit"] {
+      font-size: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="attendance-form">
+  <h2>Attendance Form</h2>
+  <form action="/attendance" method="POST"> 
+    <div class="form-group">
+      <label for="course-title">Course Title:</label>
+      <select id="course-title" name="course_title" required>
+        <option value="">-- Select Course --</option>
+        <option value="math101">Mathematics 101</option>
+        <option value="phy202">Physics 202</option>
+        <option value="chem301">Chemistry 301</option>
+        <option value="cs100">Introduction to Computer Science</option>
+        {/* Add more course options here */}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="course-id">Venue:</label>
+      <input type="text" id="venue" name="venue" placeholder="class venue" required>
+    </div>
+
+    <div class="form-group">
+      <label for="closing_time">Closing Time:</label>
+      <input type="time" id="time" name="closing_time" required>
+    </div>
+
+    <div class="form-group">
+      <label for="class">Level</label>
+      <input type="text" id="level" name="level" placeholder="level" required>
+    </div>
+
+    <div class="form-group">
+      <label for="class">Group</label>
+      <input type="text" id="group" name="group" placeholder="Week 1, Week 2 etc......." required>
+    </div>
+
+    <div class="form-group">
+      <label for="class">Remarks</label>
+      <textarea name="remarks" id="remarks" placeholder="Remarks"></textarea>
+    </div>
+
+    <div class="form-group">
+      <input type="submit" value="Submit Attendance">
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

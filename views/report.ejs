@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecturer Attendance Dashboard</title>
+    <link rel="stylesheet" href="css/le_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+.report {
+    font-family: sans-serif; /* Or a preferred report font */
+    border: 1px solid #ccc; /* Add a border around the report */
+    padding: 20px; /* Add some space inside the border */
+    margin: 20px auto; /* Center the report and add space around it */
+    max-width: 100%; /* Limit the maximum width */
+    background-color: #f9f9f9; /* Light background color */
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+.report p {
+    margin-bottom: 10px; /* Space out the lines */
+    line-height: 1.5; /* Improve readability */
+}
+
+.report .label {
+    font-weight: bold; /* Make labels bold */
+    display: inline-block; /* Allow setting a width */
+    width: 120px; /* Set a fixed width for labels for alignment */
+    margin-right: 10px; /* Space between label and value */
+    color: #333; /* Darker color for labels */
+}
+
+.report .value {
+    color: #555; /* Slightly lighter color for values */
+}
+
+.report .activity-status {
+    font-weight: bold; /* Make the status stand out */
+}
+
+.report .status-late {
+    color: red; /* Color the 'Late' status red */
+}
+
+.report .status-present {
+    color: green; /* Color the 'Late' status red */
+}
+
+/* Optional: Add a simple header */
+.report::before {
+    content: "Status Report"; /* Add a title before the content */
+    display: block;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+</style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Lecturer Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="/attendance" id="sidebarNewAttendance">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>New Attendance Form</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/report" id="sidebarNewAttendance">
+                            <i class="fa-solid fa-receipt"></i>
+                            <span>Report</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/logout" id="sidebarLogout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        <!-- <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+            <i class="fas fa-bars"></i>
+        </button> -->
+
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Attendance Report</h1>
+                <div class="mobile-header-actions">
+                    <a href="/attendance" id="mobileNewAttendanceBtn" class="mobile-action-btn" aria-label="New Attendance Form">
+                        <i class="fas fa-plus-circle"></i>
+                    </a>
+                    <a href="#logout-mobile" id="mobileLogoutBtn" class="mobile-action-btn" aria-label="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+            </header>
+
+            <section>
+                <h2>Today</h2>
+                <% for(let item of report){%>
+                <div class="report">
+                    <p><span class="label">Username:</span> <span class="value"><%= item.username %></span></p>
+                    <p><span class="label">Time Reported:</span> <span class="value"><%= item.report_time %></span></p>
+                    <p><span class="label">Time Ended:</span> <span class="value"><%= item.closing_time %></span></p>
+                    <p><span class="label">Venue:</span> <span class="value"><%= item.venue %></span></p>
+                    <p><span class="label">Status:</span><span class="activity-status status-<%= item.status %>"><%= item.status %></span></p>
+                    <p><span class="label">Date:</span> <span class="value"><%= item.week %></span></p>
+                </div>
+                <% } %>
+            </section>
+        </main>
+    </div>
+    <script src="scripts/lec.js"></script>
+</body>
+</html>
