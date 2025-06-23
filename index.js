@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import pg from "pg";
+import pkg from "pg";
 import bcrypt from "bcrypt";
 import passport from "passport";
 import { Strategy } from "passport-local";
@@ -10,24 +10,44 @@ import { fileURLToPath } from "url";
 import nodemailer from 'nodemailer';
 import { sendEmail } from "./emailUtil.js";
 import cors from 'cors';
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
+import connectPgSimple from 'connect-pg-simple';
+
+const { Pool } = pkg;
 
 dotenv.config();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
-const port = 3000; 
+const port = 3000;
 const saltRounds = 10;
 
+// ✅ Create the DB pool
+const pool = new Pool({
+  user: process.env.POSTGRES_USER,
+  host: process.env.POSTGRES_HOST,
+  database: process.env.POSTGRES_DB,
+  password: process.env.POSTGRES_PASSWORD,
+  port: Number(process.env.POSTGRES_PORT),
+  ssl: { rejectUnauthorized: false }
+});
+
+// ✅ Setup session store
+const pgSession = connectPgSimple(session);
+
 app.use(
-    session({
-      secret: process.env.SESSION_PASSWORD,
-      resave: false,
-      saveUninitialized: true,
-    })
+  session({
+    store: new pgSession({
+      pool: pool, // ✅ use pool, not Client
+    }),
+    secret: process.env.SESSION_PASSWORD,
+    resave: false,
+    saveUninitialized: false
+  })
 );
 
+// ✅ Logging config
 console.log('Connecting with:', {
   user: process.env.POSTGRES_USER,
   host: process.env.POSTGRES_HOST,
@@ -44,19 +64,24 @@ app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
-const db = new pg.Client({
-    user: process.env.POSTGRES_USER,
-    host: process.env.POSTGRES_HOST,
-    database: process.env.POSTGRES_DB,
-    password: process.env.POSTGRES_PASSWORD,
-    port: process.env.POSTGRES_PORT,
-    ssl: {
-        rejectUnauthorized: false
-    }
-})
+// ✅ If you still want a direct client (optional)
+const db = new pkg.Client({
+  user: process.env.POSTGRES_USER,
+  host: process.env.POSTGRES_HOST,
+  database: process.env.POSTGRES_DB,
+  password: process.env.POSTGRES_PASSWORD,
+  port: Number(process.env.POSTGRES_PORT),
+  ssl: { rejectUnauthorized: false }
+});
 
-db.connect();
+db.connect()
+  .then(() => console.log("✅ DB connected successfully"))
+  .catch((err) => {
+    console.error("❌ DB connection failed:", err.message);
+    process.exit(1);
+  });
 
+  
 function checkArrivalTime(scheduledTime, arrivalTime, scheduledDate) {
   const [scheduledHours, scheduledMinutes, scheduledSeconds] = scheduledTime.split(':').map(Number);
   const scheduledDateTime = new Date(scheduledDate);
